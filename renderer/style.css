@@ -1,0 +1,34 @@
+body {
+  background: #1a1a1a;
+  overflow: hidden;
+}
+.controls {
+  user-select: none;
+}
+.control-btn {
+  display: inline-block;
+  margin: 6px;
+  opacity: .4;
+  background-size: contain;
+  width: 28px;
+  height: 28px;
+}
+.control-btn:hover {
+  cursor: pointer;
+  opacity: .85;
+}
+  .prev {
+    background-image: url(img/prev.svg);
+  }
+  .play {
+    background-image: url(img/play.svg);
+  }
+  .pause {
+    background-image: url(img/pause.svg);
+  }
+  .next {
+    background-image: url(img/next.svg);
+  }
+  .list {
+    background-image: url(img/list.svg);
+  }
