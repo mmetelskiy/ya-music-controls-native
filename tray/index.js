@@ -20,7 +20,20 @@ const setTrayImage = function (image) {
 exports.init = function (onClickCallback) {
   trayInstance = new Tray(musicImage);
 
+  trayInstance.setToolTip('Music');
+
   trayInstance.on('click', onClickCallback);
+
+  // in case click event is not working
+  if (process.platform === 'linux') {
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'show/hide',
+        click: onClickCallback
+      }
+    ])
+    trayInstance.setContextMenu(contextMenu);
+  }
 };
 
 exports.showPlay = function () {
@@ -28,9 +41,13 @@ exports.showPlay = function () {
 };
 
 exports.showPause = function () {
-  setImage(pauseImage);
+  setTrayImage(pauseImage);
 };
 
 exports.showConnecting = function () {
-  setImage(musicImage);
+  setTrayImage(musicImage);
+};
+
+exports.destroy = function () {
+  trayInstance.destroy();
 };

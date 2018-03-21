@@ -3,6 +3,11 @@ body {
   overflow: hidden;
   color: white;
 }
+#title, #artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .controls {
   user-select: none;
 }

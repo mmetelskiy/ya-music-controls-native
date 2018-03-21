@@ -5,12 +5,17 @@ const {
   ipcMain
 } = electron;
 
+process.on('uncaughtException', (error) => {
+  console.log(error);
+});
+
 const path = require('path');
 const url = require('url');
 
 const DEBUG = false;
 
 let mainWindow;
+let tray;
 
 const createWindow = function() {
   const { screen } = electron;
@@ -39,6 +44,9 @@ const createWindow = function() {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+
+    // on linux alwaysOnTop in constructor didn't work for me
+    mainWindow.setAlwaysOnTop(true);
   });
 
   mainWindow.loadURL(url.format({
@@ -57,16 +65,16 @@ const createWindow = function() {
 };
 
 const toggleWindowVisibility = function () {
+  console.log('click');
   if (mainWindow) {
-    // if (mainWindow.isMinimized()) {
-    //   mainWindow.restore();
-    // } else {
-    //   mainWindow.minimize();
-    // }
     if (mainWindow.isVisible()) {
       mainWindow.hide();
     } else {
       mainWindow.show();
+
+      // on linux this properties may be eventually dropped
+      mainWindow.setAlwaysOnTop(true);
+      mainWindow.setSkipTaskbar(true);
     }
   } else {
     createWindow();
@@ -74,7 +82,7 @@ const toggleWindowVisibility = function () {
 };
 
 app.on('ready', () => {
-  const tray = require('./tray'); // eslint-disable-line
+  tray = require('./tray'); // eslint-disable-line
 
   tray.init(toggleWindowVisibility);
 
@@ -84,7 +92,7 @@ app.on('ready', () => {
   let clientSocket;
 
   io.on('connection', (client) => {
-    console.log('connection'); // eslint-disable-line
+    // console.log('connection'); // eslint-disable-line
 
     clientSocket = client;
 
@@ -94,7 +102,13 @@ app.on('ready', () => {
       });
       mainWindow.send('status', status);
 
-      console.log(status); // eslint-disable-line
+      if (status.isPlaying) {
+        tray.showPlay();
+      } else {
+        tray.showPause();
+      }
+
+      // console.log(status); // eslint-disable-line
     });
   });
 
@@ -130,6 +144,8 @@ app.on('window-all-closed', function handleAllClosed() {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    tray.destroy();
+
     app.quit();
   }
 });
