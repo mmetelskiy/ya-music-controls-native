@@ -1,6 +1,7 @@
 body {
   background: #1a1a1a;
   overflow: hidden;
+  color: white;
 }
 .controls {
   user-select: none;
