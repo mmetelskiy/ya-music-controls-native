@@ -65,7 +65,6 @@ const createWindow = function() {
 };
 
 const toggleWindowVisibility = function () {
-  console.log('click');
   if (mainWindow) {
     if (mainWindow.isVisible()) {
       mainWindow.hide();
@@ -89,10 +88,19 @@ app.on('ready', () => {
   createWindow();
 
   const io = require('socket.io')(); // eslint-disable-line
+  const mpris = require('./mpris');
   let clientSocket;
 
+  const emitSocketEvent = function (event) {
+    if (clientSocket) {
+      clientSocket.emit(event);
+    }
+  };
+
   io.on('connection', (client) => {
-    // console.log('connection'); // eslint-disable-line
+    if (process.platform === 'linux') {
+      mpris.init(emitSocketEvent);
+    }
 
     clientSocket = client;
 
@@ -102,13 +110,15 @@ app.on('ready', () => {
       });
       mainWindow.send('status', status);
 
+      if (process.platform === 'linux') {
+        mpris.setState(status);
+      }
+
       if (status.isPlaying) {
         tray.showPlay();
       } else {
         tray.showPause();
       }
-
-      // console.log(status); // eslint-disable-line
     });
   });
 
@@ -118,24 +128,16 @@ app.on('ready', () => {
 
   ipcMain
     .on('play', function playFromRenderer() {
-      if (clientSocket) {
-        clientSocket.emit('play');
-      }
+      emitSocketEvent('play');
     })
     .on('pause', function pauseFromRenderer() {
-      if (clientSocket) {
-        clientSocket.emit('pause');
-      }
+      emitSocketEvent('pause');
     })
     .on('prev', () => {
-      if (clientSocket) {
-        clientSocket.emit('prev');
-      }
+      emitSocketEvent('prev');
     })
     .on('next', () => {
-      if (clientSocket) {
-        clientSocket.emit('next');
-      }
+      emitSocketEvent('next');
     });
 });
 
