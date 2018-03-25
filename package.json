@@ -1,25 +1,24 @@
 {
-  "name": "electron-quick-start",
+  "name": "ya-music-controls-native",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Native app to control yandex music in browser",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/mmetelskiy/ya-music-controls-native",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "yandex",
+    "music",
+    "controls",
+    "native",
+    "electron"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "mmetelskiy",
+  "license": "GPL 3.0",
   "devDependencies": {
     "electron": "~1.8.2"
   },
   "dependencies": {
-    "socket.io": "^2.0.4"
   }
 }
