@@ -88,7 +88,11 @@ app.on('ready', () => {
   createWindow();
 
   const io = require('socket.io')(); // eslint-disable-line
-  const mpris = require('./mpris');
+  let mpris;
+  if (process.platform === 'linux') {
+    mpris = require('./mpris');
+  }
+
   let clientSocket;
 
   const emitSocketEvent = function (event) {
@@ -98,7 +102,7 @@ app.on('ready', () => {
   };
 
   io.on('connection', (client) => {
-    if (process.platform === 'linux') {
+    if (mpris) {
       mpris.init(emitSocketEvent);
     }
 
@@ -110,7 +114,7 @@ app.on('ready', () => {
       });
       mainWindow.send('status', status);
 
-      if (process.platform === 'linux') {
+      if (mpris) {
         mpris.setState(status);
       }
 

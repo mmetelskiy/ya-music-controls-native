@@ -21,7 +21,10 @@
   },
   "dependencies": {
     "lodash": "^4.17.5",
-    "mpris-service": "^1.1.3",
+    "npm-platform-dependencies": "^0.1.0",
     "socket.io": "^2.0.4"
+  },
+  "linuxDependencies": {
+    "mpris-service": "^1.1.3"
   }
 }
