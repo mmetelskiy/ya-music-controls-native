@@ -11,6 +11,7 @@ exports.init = function (emitSocketEvent) {
     leading: true,
     trailing: false
   });
+
   const play = _.debounce(function () {
     emitSocketEvent('play');
   }, 200, {
@@ -55,9 +56,12 @@ exports.setState = function (newState) {
     return;
   }
 
+  // console.log('duration', state.duration);
+
   player.metadata = {
     'mpris:trackid': player.objectPath('track/0'),
     'mpris:artUrl': `https://${state.cover.replace('%%', '300x300')}`,
+    'mpris:length': state.duration,
     'xesam:title': state.title,
     'xesam:artist': state.artist
   };
@@ -66,5 +70,12 @@ exports.setState = function (newState) {
     player.playbackStatus = 'Playing';
   } else {
     player.playbackStatus = 'Paused';
+  }
+};
+
+exports.seeked = function (offset) {
+  if (player) {
+    // console.log(Date.now(), 'offset:', offset);
+    player.seeked(offset);
   }
 };
