@@ -87,11 +87,37 @@ app.on('ready', () => {
 
   createWindow();
 
+  const http = require('http');
+  const fs = require('fs');
+
+  let fileContent;
+
+  const server = http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/javascript');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    if (fileContent) {
+      res.end(fileContent);
+    } else {
+      fs.readFile('./extension/page-script.js', (error, file) => {
+        if (error) {
+          console.log(error);
+          return;
+        }
+
+        fileContent = file;
+
+        res.end(fileContent);
+      });
+    }
+  });
+
+  server.listen(3008, () => {
+    console.log('listening 3008');
+  });
+
   const io = require('socket.io')(); // eslint-disable-line
   let mpris;
-  if (process.platform === 'linux') {
-    mpris = require('./mpris');
-  }
 
   let clientSocket;
 
@@ -101,29 +127,38 @@ app.on('ready', () => {
     }
   };
 
-  io.on('connection', (client) => {
-    if (mpris) {
-      mpris.init(emitSocketEvent);
-    }
+  if (process.platform === 'linux') {
+    mpris = require('./mpris');
+    mpris.init(emitSocketEvent);
+  }
 
+  io.on('connection', (client) => {
     clientSocket = client;
 
-    clientSocket.on('status', (status) => {
-      mainWindow.webContents.once('dom-ready', () => {
+    clientSocket
+      .on('status', (status) => {
+        mainWindow.webContents.once('dom-ready', () => {
+          mainWindow.send('status', status);
+        });
         mainWindow.send('status', status);
-      });
-      mainWindow.send('status', status);
 
-      if (mpris) {
-        mpris.setState(status);
-      }
+        if (mpris) {
+          mpris.setState(Object.assign({}, status, {
+            duration: Math.floor(status.duration * 1000 * 1000)
+          }));
+        }
 
-      if (status.isPlaying) {
-        tray.showPlay();
-      } else {
-        tray.showPause();
-      }
-    });
+        if (status.isPlaying) {
+          tray.showPlay();
+        } else {
+          tray.showPause();
+        }
+      })
+      .on('seeked', (seekedSeconds) => {
+        if (mpris) {
+          mpris.seeked(Math.floor(seekedSeconds * 1000 * 1000));
+        }
+      })
   });
 
   io.set('origins', '*:*');

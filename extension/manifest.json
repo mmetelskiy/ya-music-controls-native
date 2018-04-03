@@ -5,11 +5,11 @@
   "permissions": [
     "http://*/*"
   ],
-  "content_security_policy": "script-src 'self'; object-src 'self'; connect-src http://localhost:3007",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; connect-src http://localhost:3007 http://localhost:3008",
   "content_scripts": [
     {
       "matches": ["*://*.music.yandex.by/*"],
-      "js": ["socket.io.js", "index.js"]
+      "js": ["socket.io.js", "script-injector.js"]
     }
   ]
 }

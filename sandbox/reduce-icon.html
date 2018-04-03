@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+      .unmaximize {
+        --color: #878787;
+        --bg-color: white;
+
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        position: relative;
+
+        border: 1px solid black;
+        background-color: var(--bg-color);
+      }
+
+      .unmaximize:before,
+      .unmaximize:after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+      }
+
+      .unmaximize:before {
+        right: 10px;
+        top: 10px;
+        width: 50px;
+        height: 50px;
+
+        border-width: 8px;
+        border-style: solid;
+        border-color: var(--color);
+        border-radius: 14px;
+      }
+
+      .unmaximize:after {
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 60px;
+
+        outline-width: 8px;
+        outline-style: dotted;
+        outline-color: var(--color);
+        outline-offset: -14px;
+        background-color: var(--bg-color);
+      }
+
+      .arrow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: var(--bg-color);
+        width: 46px;
+        height: 46px;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+
+      .arrow:before,
+      .arrow:after {
+        content: '';
+        position: absolute;
+        display: inline-block;
+        background-color: var(--color);
+        left: 6px;
+        bottom: 6px;
+      }
+
+      .arrow:before {
+        width: 8px;
+        top: 10px;
+      }
+
+      .arrow:after {
+        height: 8px;
+        right: 10px;
+      }
+
+      .line {
+        position: absolute;
+        transform-origin: 0 100%;
+        transform: rotate(45deg);
+        width: 8px;
+        height: 35px;
+        bottom: 12px;
+        background-color: var(--color);
+      }
+    </style>
+</head>
+<body>
+  <i class="unmaximize">
+    <i class="arrow">
+      <i class="line"></i>
+    </i>
+  </i>
+</body>
+</html>
