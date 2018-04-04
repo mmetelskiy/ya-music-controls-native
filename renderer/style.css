@@ -136,6 +136,32 @@ body {
     background-color: var(--color);
   }
 
+.hide-icon {
+  --color: white;
+
+  opacity: .4;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color);
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.hide-icon:after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 8px;
+  background: var(--color);
+  margin: 14px auto 0 auto;
+}
+
+.hide-icon:hover {
+  opacity: .85;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 200px) {
   @keyframes controls-fadeout {
     10% {
@@ -155,6 +181,11 @@ body {
     50% {
       opacity: .9;
     }
+  }
+
+  body {
+    margin-top: 20px;
+    margin-bottom: 0;
   }
 
   .animate-new-song .control-btn,

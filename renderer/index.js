@@ -14,6 +14,7 @@ const coverElement = document.getElementById('cover'); // eslint-disable-line
 const titleElement = document.getElementById('title'); // eslint-disable-line
 const artistElement = document.getElementById('artist'); // eslint-disable-line
 const toggleView = document.getElementById('toggle-view'); // eslint-disable-line
+const minimizeButton = document.getElementById('minimize-to-tray'); // eslint-disable-line
 
 const setPlaying = function () {
   playButton.classList.remove('pause');
@@ -64,6 +65,9 @@ nextButton.addEventListener('click', function playNext() {
   ipcRenderer.send('next');
 });
 
+minimizeButton.addEventListener('click', function minimizeToTray() {
+  ipcRenderer.send('hide');
+});
 toggleView.addEventListener('click', function toggleView() {
   ipcRenderer.send('switch-view');
 });

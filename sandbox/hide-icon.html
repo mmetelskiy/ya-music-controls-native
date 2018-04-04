@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>hide</title>
+  <style>
+    body {
+      --color: white;
+      --bg-color: #1a1a1a;
+    }
+
+    .minimize {
+      display: inline-block;
+      position: relative;
+      width: 27px;
+      height: 24px;
+      background-color: var(--bg-color);
+    }
+
+    .minimize:after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top: 66%;
+      left: 33%;
+      right: 33%;
+      height: 10%;
+      background-color: var(--color);
+    }
+  </style>
+</head>
+<body>
+  <i class="minimize"></i>
+</body>
+</html>
