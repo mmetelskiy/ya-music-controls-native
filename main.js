@@ -12,16 +12,16 @@ process.on('uncaughtException', (error) => {
 const path = require('path');
 const url = require('url');
 
-const DEBUG = false;
+const DEBUG = process.env.DEBUG || 0;
 
 let mainWindow;
+let windowHeight = 150;
+let windowWidth = 300;
 let tray;
 
 const createWindow = function() {
   const { screen } = electron;
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  let windowHeight = 150;
-  let windowWidth = 300;
 
   if (DEBUG) {
     windowHeight = 600;
@@ -77,6 +77,19 @@ const toggleWindowVisibility = function () {
     }
   } else {
     createWindow();
+  }
+};
+
+const changeWindowSize = function (newWidth, newHeight) {
+  const { screen } = electron;
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+  windowWidth = newWidth;
+  windowHeight = newHeight;
+
+  if (mainWindow) {
+    mainWindow.setSize(windowWidth, windowHeight);
+    mainWindow.setPosition(width - windowWidth, height - windowHeight);
   }
 };
 
@@ -177,6 +190,13 @@ app.on('ready', () => {
     })
     .on('next', () => {
       emitSocketEvent('next');
+    })
+    .on('switch-view', () => {
+      if (windowWidth > 200) {
+        changeWindowSize(150, 50);
+      } else {
+        changeWindowSize(300, 150);
+      }
     });
 });
 
