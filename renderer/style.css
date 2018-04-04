@@ -8,7 +8,8 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.controls {
+.controls,
+.window-controls {
   user-select: none;
 }
 .control-btn {

@@ -4,6 +4,7 @@
   "description": "Native app to control yandex music in browser",
   "main": "main.js",
   "scripts": {
+    "postinstall": "npmpd",
     "start": "electron ."
   },
   "repository": "https://github.com/mmetelskiy/ya-music-controls-native",
