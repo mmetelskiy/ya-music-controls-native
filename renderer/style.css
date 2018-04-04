@@ -38,3 +38,165 @@ body {
   .list {
     background-image: url(img/list.svg);
   }
+
+/* window controls */
+.window-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+  .unmaximize {
+    --color: white;
+    --bg-color: #1a1a1a;
+
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+
+    background-color: var(--bg-color);
+    opacity: .4;
+  }
+
+  .unmaximize:hover {
+    opacity: .85;
+    cursor: pointer;
+  }
+
+  .unmaximize:before,
+  .unmaximize:after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+  }
+
+  .unmaximize:before {
+    right: 2px;
+    top: 2px;
+    width: 10px;
+    height: 10px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--color);
+    border-radius: 2px;
+  }
+
+  .unmaximize:after {
+    left: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+
+    outline-width: 1px;
+    outline-style: dotted;
+    outline-color: var(--color);
+    outline-offset: -2px;
+    background-color: var(--bg-color);
+  }
+
+  .arrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    width: 9px;
+    height: 9px;
+    padding: 1px;
+    box-sizing: border-box;
+  }
+
+  .arrow:before,
+  .arrow:after {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    background-color: var(--color);
+    left: 1px;
+    bottom: 1px;
+  }
+
+  .arrow:before {
+    width: 1px;
+    top: 2px;
+  }
+
+  .arrow:after {
+    height: 1px;
+    right: 2px;
+  }
+
+  .line {
+    position: absolute;
+    transform-origin: 0 100%;
+    transform: rotate(45deg);
+    width: 1px;
+    height: 7px;
+    bottom: 2px;
+    background-color: var(--color);
+  }
+
+@media screen and (max-width: 200px) {
+  @keyframes controls-fadeout {
+    10% {
+      opacity: .1;
+    }
+
+    50% {
+      opacity: .1;
+    }
+  }
+
+  @keyframes info-fadein {
+    10% {
+      opacity: .9;
+    }
+
+    50% {
+      opacity: .9;
+    }
+  }
+
+  .animate-new-song .control-btn,
+  .animate-new-song .info {
+    animation-duration: 6s;
+  }
+
+  .animate-new-song .control-btn {
+    animation-name: controls-fadeout;
+  }
+
+  .animate-new-song .info {
+    animation-name: info-fadein;
+  }
+
+  .animate-new-song .control-btn:hover {
+    opacity: .3;
+  }
+
+  .info {
+    position: absolute;
+    left: 0;
+    right: 10px;
+    display: inline-block;
+    text-align: center;
+    opacity: .1;
+  }
+
+  #cover {
+    display: none;
+  }
+
+  .unmaximize {
+    transform: rotate(-90deg);
+  }
+    .arrow {
+      transform: rotate(180deg);
+      top: 4px;
+      right: 4px;
+      z-index: 1;
+    }
+      .line {
+        height: 10px;
+      }
+}

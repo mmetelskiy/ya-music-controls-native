@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-let state = {
+let playerState = {
   cover: '',
   title: '',
   artist: '',
@@ -13,6 +13,7 @@ const nextButton = document.getElementById('next'); // eslint-disable-line
 const coverElement = document.getElementById('cover'); // eslint-disable-line
 const titleElement = document.getElementById('title'); // eslint-disable-line
 const artistElement = document.getElementById('artist'); // eslint-disable-line
+const toggleView = document.getElementById('toggle-view'); // eslint-disable-line
 
 const setPlaying = function () {
   playButton.classList.remove('pause');
@@ -21,22 +22,36 @@ const setPaused = function () {
   playButton.classList.add('pause');
 };
 
-const setState = function (newState) {
-  state = newState;
+const isTrackChanged = function (newState) {
+  return playerState.title !== newState.title ||
+    playerState.artist !== newState.artist;
+};
 
-  titleElement.textContent = state.title;
-  artistElement.textContent = state.artist;
-  coverElement.src = `https://${state.cover.replace('%%', '50x50')}`;
+const setPlayerState = function (newState) {
+  const animate = isTrackChanged(newState);
 
-  if (state.isPlaying) {
+  playerState = newState;
+
+  titleElement.textContent = playerState.title;
+  artistElement.textContent = playerState.artist;
+  coverElement.src = `https://${playerState.cover.replace('%%', '50x50')}`;
+
+  if (playerState.isPlaying) {
     setPaused();
   } else {
     setPlaying();
   }
+
+  if (animate) {
+    document.body.classList.remove('animate-new-song');
+    setTimeout(() => {
+      document.body.classList.add('animate-new-song');
+    }, 100);
+  }
 };
 
 playButton.addEventListener('click', function togglePlay() {
-  if (state.isPlaying) {
+  if (playerState.isPlaying) {
     ipcRenderer.send('pause');
   } else {
     ipcRenderer.send('play');
@@ -49,8 +64,16 @@ nextButton.addEventListener('click', function playNext() {
   ipcRenderer.send('next');
 });
 
+toggleView.addEventListener('click', function toggleView() {
+  ipcRenderer.send('switch-view');
+});
+
 ipcRenderer.on('status', (event, status) => {
   console.log(status);
 
-  setState(status);
+  setPlayerState(status);
 });
+
+setTimeout(() => {
+  ipcRenderer.send('compact-view');
+}, 1000);
