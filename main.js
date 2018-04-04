@@ -191,9 +191,12 @@ app.on('ready', () => {
     .on('next', () => {
       emitSocketEvent('next');
     })
+    .on('hide', () => {
+      toggleWindowVisibility();
+    })
     .on('switch-view', () => {
       if (windowWidth > 200) {
-        changeWindowSize(150, 50);
+        changeWindowSize(150, 70);
       } else {
         changeWindowSize(300, 150);
       }
