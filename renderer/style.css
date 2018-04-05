@@ -42,26 +42,36 @@ body {
 
 /* window controls */
 .window-controls {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-  .unmaximize {
-    --color: white;
-    --bg-color: #1a1a1a;
+  --color: white;
+  --bg-color: #1a1a1a;
 
-    display: inline-block;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 0;
+}
+
+  .window-controls > * {
     width: 20px;
     height: 20px;
+    margin-left: 2px;
+    opacity: .4;
+    border: 1px solid var(--color);
+    border-radius: 3px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .window-controls > *:hover {
+    opacity: .85;
+    cursor: pointer;
+  }
+
+  .unmaximize {
+    display: inline-block;
     position: relative;
 
     background-color: var(--bg-color);
-    opacity: .4;
-  }
-
-  .unmaximize:hover {
-    opacity: .85;
-    cursor: pointer;
   }
 
   .unmaximize:before,
@@ -72,8 +82,8 @@ body {
   }
 
   .unmaximize:before {
-    right: 2px;
-    top: 2px;
+    right: 1px;
+    top: 1px;
     width: 10px;
     height: 10px;
 
@@ -84,10 +94,10 @@ body {
   }
 
   .unmaximize:after {
-    left: 0;
-    bottom: 0;
-    width: 12px;
-    height: 12px;
+    left: 1px;
+    bottom: 1px;
+    width: 11px;
+    height: 11px;
 
     outline-width: 1px;
     outline-style: dotted;
@@ -97,12 +107,13 @@ body {
   }
 
   .arrow {
+    z-index: 1;
     position: absolute;
     top: 0;
     right: 0;
     background-color: var(--bg-color);
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     padding: 1px;
     box-sizing: border-box;
   }
@@ -138,15 +149,7 @@ body {
   }
 
 .hide-icon {
-  --color: white;
-
-  opacity: .4;
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--color);
-  border-radius: 3px;
-  box-sizing: border-box;
 }
 
 .hide-icon:after {
