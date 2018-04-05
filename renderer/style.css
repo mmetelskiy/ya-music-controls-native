@@ -56,8 +56,10 @@ body {
     height: 20px;
     margin-left: 2px;
     opacity: .4;
-    border: 1px solid var(--color);
-    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, .3);
+    border-radius: 4px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -96,8 +98,8 @@ body {
   .unmaximize:after {
     left: 1px;
     bottom: 1px;
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
 
     outline-width: 1px;
     outline-style: dotted;
@@ -143,7 +145,7 @@ body {
     transform-origin: 0 100%;
     transform: rotate(45deg);
     width: 1px;
-    height: 7px;
+    height: 6px;
     bottom: 2px;
     background-color: var(--color);
   }
@@ -225,6 +227,12 @@ body {
   .unmaximize {
     transform: rotate(-90deg);
   }
+
+    .unmaximize:before {
+      top: 2px;
+      right: 2px;
+    }
+
     .arrow {
       transform: rotate(180deg);
       top: 4px;
