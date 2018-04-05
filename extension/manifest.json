@@ -8,7 +8,12 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; connect-src http://localhost:3007 http://localhost:3008",
   "content_scripts": [
     {
-      "matches": ["*://*.music.yandex.by/*"],
+      "matches": [
+        "*://*.music.yandex.ru/*",
+        "*://*.music.yandex.net/*",
+        "*://*.music.yandex.ua/*",
+        "*://*.music.yandex.by/*"
+      ],
       "js": ["socket.io.js", "script-injector.js"]
     }
   ]
