@@ -23,13 +23,14 @@ const setPaused = function () {
   playButton.classList.add('pause');
 };
 
-const isTrackChanged = function (newState) {
+const toShowOrNotToShowTrack = function (newState) {
   return playerState.title !== newState.title ||
-    playerState.artist !== newState.artist;
+    playerState.artist !== newState.artist ||
+    !playerState.isPlaying && newState.isPlaying;
 };
 
 const setPlayerState = function (newState) {
-  const animate = isTrackChanged(newState);
+  const animate = toShowOrNotToShowTrack(newState);
 
   playerState = newState;
 

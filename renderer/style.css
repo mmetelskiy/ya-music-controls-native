@@ -165,7 +165,7 @@ body {
 
 @media screen and (max-width: 200px) {
   @keyframes controls-fadeout {
-    10% {
+    20% {
       opacity: .1;
     }
 
@@ -175,7 +175,7 @@ body {
   }
 
   @keyframes info-fadein {
-    10% {
+    20% {
       opacity: .9;
     }
 
