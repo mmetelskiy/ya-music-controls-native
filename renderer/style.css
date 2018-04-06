@@ -3,6 +3,22 @@ body {
   overflow: hidden;
   color: white;
 }
+
+.info:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+#cover {
+  float: left;
+  margin-right: 8px;
+}
+
+#title {
+  padding-top: 13px;
+}
+
 #title, #artist {
   white-space: nowrap;
   overflow: hidden;
@@ -52,6 +68,7 @@ body {
 }
 
   .window-controls > * {
+    display: inline-block;
     width: 20px;
     height: 20px;
     margin-left: 2px;
@@ -70,7 +87,6 @@ body {
   }
 
   .unmaximize {
-    display: inline-block;
     position: relative;
 
     background-color: var(--bg-color);
@@ -150,10 +166,6 @@ body {
     background-color: var(--color);
   }
 
-.hide-icon {
-  display: inline-block;
-}
-
 .hide-icon:after {
   content: '';
   display: block;
@@ -167,6 +179,35 @@ body {
   opacity: .85;
   cursor: pointer;
 }
+
+.anchor:hover {
+  cursor: default;
+}
+
+.progress-bar {
+  margin-top: 8px;
+  --progress-color: #FFDB4D;
+  --loaded-color: #6B6B6B;
+  --bar-color: #464646;
+
+  height: 10px;
+  background: var(--bar-color);
+  position: relative;
+}
+
+  #loaded {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    background: var(--loaded-color);
+  }
+
+  #progress {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    background: var(--progress-color);
+  }
 
 @media screen and (max-width: 200px) {
   @keyframes controls-fadeout {
@@ -192,6 +233,22 @@ body {
   body {
     margin-top: 20px;
     margin-bottom: 0;
+  }
+
+  .progress-bar {
+    position: fixed;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    height: 2px;
+  }
+
+    #loaded {
+      display: none;
+    }
+
+  #title {
+    padding-top: 0;
   }
 
   .animate-new-song .control-btn,
@@ -222,6 +279,20 @@ body {
 
   #cover {
     display: none;
+  }
+
+  .window-controls {
+    left: 0;
+  }
+
+  .window-controls > * {
+    float: right;
+  }
+
+  .anchor {
+    float: left;
+    width: 15px;
+    height: 15px;
   }
 
   .unmaximize {

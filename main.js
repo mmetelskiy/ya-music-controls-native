@@ -167,11 +167,14 @@ app.on('ready', () => {
           tray.showPause();
         }
       })
-      .on('seeked', (seekedSeconds) => {
+      .on('seeked', (progress) => {
         if (mpris) {
-          mpris.seeked(Math.floor(seekedSeconds * 1000 * 1000));
+          // progress.position - seconds
+          mpris.seeked(Math.floor(progress.position * 1000 * 1000));
         }
-      })
+
+        mainWindow.send('seeked', progress);
+      });
   });
 
   io.set('origins', '*:*');
@@ -196,7 +199,7 @@ app.on('ready', () => {
     })
     .on('switch-view', () => {
       if (windowWidth > 200) {
-        changeWindowSize(150, 70);
+        changeWindowSize(150, 63);
       } else {
         changeWindowSize(300, 150);
       }

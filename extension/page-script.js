@@ -44,7 +44,11 @@
       const progress = api.getProgress();
 
       window.dispatchEvent(new CustomEvent('music:seeked', {
-        detail: progress.position
+        detail: {
+          position: progress.position,
+          loaded: progress.loaded,
+          duration: progress.duration
+        }
       }));
 
       lastTimeProgressSent = Date.now();
@@ -55,14 +59,7 @@
 
   api.on(api.EVENT_STATE, sendStatus);
   api.on(api.EVENT_TRACK, sendStatus);
-
-  // issues with node-dbus. Not working properly with datatypes
-  // see:
-  //    https://github.com/emersion/mpris-service/issues/1
-  //    https://github.com/Shouqun/node-dbus/issues/173
-  //    https://github.com/Shouqun/node-dbus/issues/143
-  //
-  // api.on(api.EVENT_PROGRESS, sendProgress);
+  api.on(api.EVENT_PROGRESS, sendProgress);
 
   window.addEventListener('music:play', () => {
     const isPlaying = api.isPlaying();
