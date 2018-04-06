@@ -28,14 +28,6 @@
     return status;
   };
 
-  const sendStatus = function () {
-    const status = getStatus();
-
-    window.dispatchEvent(new CustomEvent('music:status', {
-      detail: status
-    }));
-  };
-
   let lastTimeProgressSent;
   const progressThrottleTime = 1000;
 
@@ -55,10 +47,23 @@
     }
   };
 
-  window.addEventListener('music:getStatus', sendStatus);
+  const sendPlayerStatus = function () {
+    const status = getStatus();
 
-  api.on(api.EVENT_STATE, sendStatus);
-  api.on(api.EVENT_TRACK, sendStatus);
+    window.dispatchEvent(new CustomEvent('music:status', {
+      detail: status
+    }));
+  };
+
+  const sendFullStatus = function () {
+    sendPlayerStatus();
+    sendProgress();
+  };
+
+  window.addEventListener('music:getStatus', sendFullStatus);
+
+  api.on(api.EVENT_STATE, sendPlayerStatus);
+  api.on(api.EVENT_TRACK, sendPlayerStatus);
   api.on(api.EVENT_PROGRESS, sendProgress);
 
   window.addEventListener('music:play', () => {

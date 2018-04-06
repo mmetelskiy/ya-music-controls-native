@@ -173,6 +173,10 @@ app.on('ready', () => {
           mpris.seeked(Math.floor(progress.position * 1000 * 1000));
         }
 
+        mainWindow.webContents.once('dom-ready', () => {
+          mainWindow.send('seeked', progress);
+        });
+
         mainWindow.send('seeked', progress);
       });
   });
