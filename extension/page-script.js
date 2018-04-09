@@ -86,6 +86,10 @@
     api.prev();
   });
 
+  window.addEventListener('music:to-beginning', () => {
+    api.setPosition(0);
+  });
+
   window.addEventListener('music:next', () => {
     api.next();
   });

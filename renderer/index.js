@@ -6,6 +6,7 @@ let playerState = {
   artist: '',
   isPlaying: false
 };
+let currentPosition = 0;
 
 const playButton = document.getElementById('play-pause'); // eslint-disable-line
 const prevButton = document.getElementById('prev'); // eslint-disable-line
@@ -59,6 +60,8 @@ const updateProgress = function (progress) {
   const position = progress.position || 0;
   const duration = progress.duration;
 
+  currentPosition = position;
+
   if (duration) {
     progressLoaded.style.width = `${loaded / duration * 100}%`;
     progressPosition.style.width = `${position / duration * 100}%`;
@@ -76,7 +79,11 @@ playButton.addEventListener('click', function togglePlay() {
   }
 });
 prevButton.addEventListener('click', function playPrev() {
-  ipcRenderer.send('prev');
+  if (currentPosition < 5) {
+    ipcRenderer.send('prev');
+  } else {
+    ipcRenderer.send('to-beginning');
+  }
 });
 nextButton.addEventListener('click', function playNext() {
   ipcRenderer.send('next');

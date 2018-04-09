@@ -28,6 +28,9 @@ body {
 .window-controls {
   user-select: none;
 }
+.controls {
+  text-align: center;
+}
 .control-btn {
   display: inline-block;
   margin: 6px;
@@ -193,6 +196,7 @@ body {
   height: 10px;
   background: var(--bar-color);
   position: relative;
+  opacity: .8;
 }
 
   #loaded {
@@ -240,7 +244,7 @@ body {
     bottom: 2px;
     left: 2px;
     right: 2px;
-    height: 2px;
+    height: 1px;
   }
 
     #loaded {
