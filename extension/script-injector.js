@@ -40,6 +40,9 @@
     .on('prev', () => {
       window.dispatchEvent(new CustomEvent('music:prev'));
     })
+    .on('to-beginning', () => {
+      window.dispatchEvent(new CustomEvent('music:to-beginning'));
+    })
     .on('next', () => {
       window.dispatchEvent(new CustomEvent('music:next'));
     })

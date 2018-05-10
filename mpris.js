@@ -75,7 +75,11 @@ exports.setState = function (newState) {
 
 exports.seeked = function (offset) {
   if (player) {
-    // console.log(Date.now(), 'offset:', offset);
-    player.seeked(offset);
+    // issues with node-dbus. Not working properly with datatypes
+    // see:
+    //    https://github.com/emersion/mpris-service/issues/1
+    //    https://github.com/Shouqun/node-dbus/issues/173
+    //    https://github.com/Shouqun/node-dbus/issues/143
+    // player.seeked(offset);
   }
 };

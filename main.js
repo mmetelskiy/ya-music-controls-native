@@ -14,19 +14,26 @@ const url = require('url');
 
 const DEBUG = process.env.DEBUG || 0;
 
+let WINDOW_FULL_WIDTH = 300;
+let WINDOW_FULL_HEIGHT = 115;
+let WINDOW_COMPACT_WIDTH = 150;
+let WINDOW_COMPACT_HEIGHT = 63;
+
+if (DEBUG) {
+  WINDOW_FULL_WIDTH = 800;
+  WINDOW_FULL_HEIGHT = 600;
+  WINDOW_COMPACT_WIDTH = 800;
+  WINDOW_COMPACT_HEIGHT = 600;
+}
+
 let mainWindow;
-let windowHeight = 150;
-let windowWidth = 300;
+let windowHeight = WINDOW_FULL_HEIGHT;
+let windowWidth = WINDOW_FULL_WIDTH;
 let tray;
 
 const createWindow = function() {
   const { screen } = electron;
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
-  if (DEBUG) {
-    windowHeight = 600;
-    windowWidth = 800;
-  }
 
   mainWindow = new BrowserWindow({
     width: windowWidth,
@@ -36,7 +43,7 @@ const createWindow = function() {
     frame: false,
     backgroundColor: '#1a1a1a',
     resizable: false,
-    movable: false,
+    // movable: false,
     alwaysOnTop: true,
     skipTaskbar: true,
     show: false
@@ -146,7 +153,9 @@ app.on('ready', () => {
   }
 
   io.on('connection', (client) => {
-    clientSocket = client;
+    if (!clientSocket) {
+      clientSocket = client;
+    }
 
     clientSocket
       .on('status', (status) => {
@@ -167,11 +176,21 @@ app.on('ready', () => {
           tray.showPause();
         }
       })
-      .on('seeked', (seekedSeconds) => {
+      .on('seeked', (progress) => {
         if (mpris) {
-          mpris.seeked(Math.floor(seekedSeconds * 1000 * 1000));
+          // progress.position - seconds
+          mpris.seeked(Math.floor(progress.position * 1000 * 1000));
         }
+
+        mainWindow.webContents.once('dom-ready', () => {
+          mainWindow.send('seeked', progress);
+        });
+
+        mainWindow.send('seeked', progress);
       })
+      .on('disconnect', () => {
+        clientSocket = null;
+      });
   });
 
   io.set('origins', '*:*');
@@ -188,6 +207,9 @@ app.on('ready', () => {
     .on('prev', () => {
       emitSocketEvent('prev');
     })
+    .on('to-beginning', () => {
+      emitSocketEvent('to-beginning');
+    })
     .on('next', () => {
       emitSocketEvent('next');
     })
@@ -196,9 +218,9 @@ app.on('ready', () => {
     })
     .on('switch-view', () => {
       if (windowWidth > 200) {
-        changeWindowSize(150, 70);
+        changeWindowSize(WINDOW_COMPACT_WIDTH, WINDOW_COMPACT_HEIGHT);
       } else {
-        changeWindowSize(300, 150);
+        changeWindowSize(WINDOW_FULL_WIDTH, WINDOW_FULL_HEIGHT);
       }
     });
 });

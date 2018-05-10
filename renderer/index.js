@@ -6,6 +6,7 @@ let playerState = {
   artist: '',
   isPlaying: false
 };
+let currentPosition = 0;
 
 const playButton = document.getElementById('play-pause'); // eslint-disable-line
 const prevButton = document.getElementById('prev'); // eslint-disable-line
@@ -15,6 +16,8 @@ const titleElement = document.getElementById('title'); // eslint-disable-line
 const artistElement = document.getElementById('artist'); // eslint-disable-line
 const toggleView = document.getElementById('toggle-view'); // eslint-disable-line
 const minimizeButton = document.getElementById('minimize-to-tray'); // eslint-disable-line
+const progressLoaded = document.getElementById('loaded'); // eslint-disable-line
+const progressPosition = document.getElementById('progress'); // eslint-disable-line
 
 const setPlaying = function () {
   playButton.classList.remove('pause');
@@ -52,6 +55,22 @@ const setPlayerState = function (newState) {
   }
 };
 
+const updateProgress = function (progress) {
+  const loaded = progress.loaded || 0;
+  const position = progress.position || 0;
+  const duration = progress.duration;
+
+  currentPosition = position;
+
+  if (duration) {
+    progressLoaded.style.width = `${loaded / duration * 100}%`;
+    progressPosition.style.width = `${position / duration * 100}%`;
+  } else {
+    progressLoaded.style.width = 0;
+    progressPosition.style.width = 0;
+  }
+};
+
 playButton.addEventListener('click', function togglePlay() {
   if (playerState.isPlaying) {
     ipcRenderer.send('pause');
@@ -60,7 +79,11 @@ playButton.addEventListener('click', function togglePlay() {
   }
 });
 prevButton.addEventListener('click', function playPrev() {
-  ipcRenderer.send('prev');
+  if (currentPosition < 5) {
+    ipcRenderer.send('prev');
+  } else {
+    ipcRenderer.send('to-beginning');
+  }
 });
 nextButton.addEventListener('click', function playNext() {
   ipcRenderer.send('next');
@@ -73,12 +96,10 @@ toggleView.addEventListener('click', function toggleView() {
   ipcRenderer.send('switch-view');
 });
 
-ipcRenderer.on('status', (event, status) => {
-  console.log(status);
-
-  setPlayerState(status);
-});
-
-setTimeout(() => {
-  ipcRenderer.send('compact-view');
-}, 1000);
+ipcRenderer
+  .on('status', (event, status) => {
+    setPlayerState(status);
+  })
+  .on('seeked', (event, progress) => {
+    updateProgress(progress);
+  });
