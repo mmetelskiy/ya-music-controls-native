@@ -15,7 +15,7 @@ const url = require('url');
 const DEBUG = process.env.DEBUG || 0;
 
 let WINDOW_FULL_WIDTH = 300;
-let WINDOW_FULL_HEIGHT = 120;
+let WINDOW_FULL_HEIGHT = 115;
 let WINDOW_COMPACT_WIDTH = 150;
 let WINDOW_COMPACT_HEIGHT = 63;
 
@@ -43,7 +43,7 @@ const createWindow = function() {
     frame: false,
     backgroundColor: '#1a1a1a',
     resizable: false,
-    movable: false,
+    // movable: false,
     alwaysOnTop: true,
     skipTaskbar: true,
     show: false
@@ -153,7 +153,9 @@ app.on('ready', () => {
   }
 
   io.on('connection', (client) => {
-    clientSocket = client;
+    if (!clientSocket) {
+      clientSocket = client;
+    }
 
     clientSocket
       .on('status', (status) => {
@@ -185,6 +187,9 @@ app.on('ready', () => {
         });
 
         mainWindow.send('seeked', progress);
+      })
+      .on('disconnect', () => {
+        clientSocket = null;
       });
   });
 

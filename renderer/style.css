@@ -183,6 +183,16 @@ body {
   cursor: pointer;
 }
 
+.anchor {
+  -webkit-app-region: drag;
+
+  background-image: url(img/anchor.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+  opacity: .2;
+}
+
 .anchor:hover {
   cursor: default;
 }
@@ -297,6 +307,7 @@ body {
     float: left;
     width: 15px;
     height: 15px;
+    background-size: 11px;
   }
 
   .unmaximize {
